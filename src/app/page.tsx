@@ -9,12 +9,12 @@ import { getHomePageData } from "@/lib/data";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const { settings, writings, journeys } = await getHomePageData();
+  const { settings, writings, journeys, live } = await getHomePageData();
 
   return (
     <>
       <Header settings={settings} />
-      <main>
+      <main data-content-source={live ? "firestore" : "fixtures"}>
         <Hero settings={settings} writings={writings} />
         <RecentWritings settings={settings} writings={writings} />
         <Journeys settings={settings} journeys={journeys} />
