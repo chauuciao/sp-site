@@ -69,10 +69,13 @@ export function RecentWritings({
   const predicate = FILTERS[active.toLowerCase()] ?? FILTERS.recent;
   const visible = writings.filter(predicate);
 
+  // renders bare (no section/grid) — the homepage composes it into the
+  // shared grid so the featured card can stick alongside it
   return (
-    <section id="writings" className="px-6 pt-16 pb-24 page:pt-[120px]">
-      <div className="page:grid page:grid-cols-16 page:gap-x-[10px]">
-        <div className="flex flex-col gap-10 page:col-[8/span_8] page:max-w-[705px]">
+    <div
+      id="writings"
+      className="flex flex-col gap-10 pt-16 page:max-w-[705px] page:pt-[120px]"
+    >
           <SectionHeading
             soft={settings.writingsTitle}
             strong={settings.writingsSubtitle}
@@ -103,8 +106,6 @@ export function RecentWritings({
               </li>
             )}
           </ul>
-        </div>
-      </div>
-    </section>
+    </div>
   );
 }

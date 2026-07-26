@@ -46,7 +46,7 @@ export function Journeys({
           strong={settings.journeysSubtitle}
         />
       </div>
-      <ul className="flex snap-x snap-mandatory gap-3 overflow-x-auto">
+      <ul className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 scroll-px-6">
         {journeys.map((j) => (
           <JourneyCard key={j.id} journey={j} />
         ))}

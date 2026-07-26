@@ -58,6 +58,8 @@ export function Footer({
         </div>
 
         <div className="order-1 flex flex-col page:order-none page:col-[8/span_8]">
+          {/* centered against the portrait card; copyright stays pinned below */}
+          <div className="flex grow flex-col justify-center">
           <SectionHeading
             soft={settings.newsletterTitle}
             strong={settings.newsletterSubtitle}
@@ -92,8 +94,9 @@ export function Footer({
               </button>
             </div>
           </form>
+          </div>
 
-          <div className="flex grow flex-col justify-end pt-24 page:pt-40">
+          <div className="flex flex-col justify-end pt-24 page:pt-10">
             <div className="flex flex-col gap-4 text-[12px] leading-[18px] text-black/60 sm:flex-row sm:items-center sm:justify-between">
               <p>{settings.copyright}</p>
               <ul className="flex items-center gap-4">
