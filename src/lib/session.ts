@@ -37,6 +37,11 @@ export async function requireOwner(): Promise<OwnerSession> {
 }
 
 export function isOwnerEmail(email: string | undefined): boolean {
-  const owner = process.env.OWNER_EMAIL;
-  return Boolean(owner && email && email.toLowerCase() === owner.toLowerCase());
+  if (!email) return false;
+  // OWNER_EMAIL accepts a comma-separated list (father + site maintainer)
+  const owners = (process.env.OWNER_EMAIL ?? "")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+  return owners.includes(email.toLowerCase());
 }
