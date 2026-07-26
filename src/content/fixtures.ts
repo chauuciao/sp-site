@@ -30,8 +30,8 @@ export interface JourneyFixture {
 export const settings = {
   wordmark: "Shrikant Pandey",
   nav: [
-    { label: "Writings", href: "#writings" },
-    { label: "Newsletter", href: "#newsletter" },
+    { label: "Writings", href: "/#writings" },
+    { label: "Newsletter", href: "/#newsletter" },
     { label: "Copy Email", href: "#copy-email" },
   ],
   heroLead: "Shrikant Pandey",
