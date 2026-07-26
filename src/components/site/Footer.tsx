@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { formatDate, settings, writings } from "@/content/fixtures";
+import { formatDate } from "@/content/fixtures";
+import type { SettingsDoc, WritingDoc } from "@/lib/data";
 import { SectionHeading } from "./SectionHeading";
 import { SubjectTitle } from "./SubjectTitle";
 
@@ -8,7 +9,13 @@ import { SubjectTitle } from "./SubjectTitle";
  * beside the newsletter block. Responsive decision: newsletter first below
  * `page` — it's the call to action; the portrait card is garnish.
  */
-export function Footer() {
+export function Footer({
+  settings,
+  writings,
+}: {
+  settings: SettingsDoc;
+  writings: WritingDoc[];
+}) {
   const recent = writings.slice(0, 2);
 
   return (

@@ -1,9 +1,10 @@
 import Image from "next/image";
-import { formatDate, settings, writings, type WritingFixture } from "@/content/fixtures";
+import { formatDate } from "@/content/fixtures";
+import type { SettingsDoc, WritingDoc } from "@/lib/data";
 import { SectionHeading } from "./SectionHeading";
 import { SubjectTitle } from "./SubjectTitle";
 
-function WritingRow({ writing }: { writing: WritingFixture }) {
+function WritingRow({ writing }: { writing: WritingDoc }) {
   return (
     <li className="border-b border-line">
       <a
@@ -39,7 +40,13 @@ function WritingRow({ writing }: { writing: WritingFixture }) {
  * (cols 8–15) at `page`; below that it spans the full width. Filter tabs are
  * static in M1 — they become interactive when wired to real queries in M6.
  */
-export function RecentWritings() {
+export function RecentWritings({
+  settings,
+  writings,
+}: {
+  settings: SettingsDoc;
+  writings: WritingDoc[];
+}) {
   return (
     <section id="writings" className="px-6 pt-16 pb-24 page:pt-[120px]">
       <div className="page:grid page:grid-cols-16 page:gap-x-[10px]">

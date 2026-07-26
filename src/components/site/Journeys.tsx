@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { journeys, settings, type JourneyFixture } from "@/content/fixtures";
+import type { JourneyDoc, SettingsDoc } from "@/lib/data";
 import { SectionHeading } from "./SectionHeading";
 
-function JourneyCard({ journey }: { journey: JourneyFixture }) {
+function JourneyCard({ journey }: { journey: JourneyDoc }) {
   return (
     <li className="relative h-[min(700px,120vw)] w-[min(500px,85vw)] shrink-0 snap-start overflow-hidden">
       <Image
@@ -31,7 +31,13 @@ function JourneyCard({ journey }: { journey: JourneyFixture }) {
  * is an intentional overflow — implemented as a scroll-snap strip at every
  * width. Cards shrink fluidly below 500px via min().
  */
-export function Journeys() {
+export function Journeys({
+  settings,
+  journeys,
+}: {
+  settings: SettingsDoc;
+  journeys: JourneyDoc[];
+}) {
   return (
     <section>
       <div className="flex flex-col gap-1 p-6">
@@ -42,7 +48,7 @@ export function Journeys() {
       </div>
       <ul className="flex snap-x snap-mandatory gap-3 overflow-x-auto">
         {journeys.map((j) => (
-          <JourneyCard key={`${j.place}-${j.year}`} journey={j} />
+          <JourneyCard key={j.id} journey={j} />
         ))}
       </ul>
     </section>

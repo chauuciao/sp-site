@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { settings, writings } from "@/content/fixtures";
+import type { SettingsDoc, WritingDoc } from "@/lib/data";
 import { SubjectTitle } from "./SubjectTitle";
 
 /**
@@ -8,7 +8,13 @@ import { SubjectTitle } from "./SubjectTitle";
  * (1100px) the two columns stack — intro first (it introduces the site),
  * then the featured card at its natural width.
  */
-export function Hero() {
+export function Hero({
+  settings,
+  writings,
+}: {
+  settings: SettingsDoc;
+  writings: WritingDoc[];
+}) {
   const featured = writings.find((w) => w.featured) ?? writings[0];
 
   return (

@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { settings } from "@/content/fixtures";
+import type { SettingsDoc } from "@/lib/data";
 
-export function Header() {
+export function Header({ settings }: { settings: SettingsDoc }) {
   return (
     <header className="flex items-start justify-between gap-4 p-6 text-[14px] font-medium leading-[14px] sm:gap-6 sm:text-[16px]">
       <Link href="/" className="whitespace-nowrap">
