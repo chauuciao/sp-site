@@ -23,7 +23,10 @@ import { adminDb, firebaseConfigured } from "./firebase/admin";
  *   */
 
 export type SettingsDoc = typeof fixtureSettings;
-export type WritingDoc = WritingFixture;
+export type WritingDoc = WritingFixture & {
+  /** Verbatim Goodreads review HTML (imported); BlockNote body replaces this in M4 */
+  reviewHtml?: string | null;
+};
 export type JourneyDoc = JourneyFixture & { id: string };
 
 export interface HomePageData {
@@ -57,4 +60,16 @@ export async function getHomePageData(): Promise<HomePageData> {
     journeys: journeysSnap.docs.map((d) => ({ ...(d.data() as JourneyFixture), id: d.id })),
     live: true,
   };
+}
+
+export async function getReviewBySlug(slug: string): Promise<WritingDoc | null> {
+  if (!firebaseConfigured()) {
+    return fixtureWritings.find((w) => w.slug === slug) ?? null;
+  }
+  const snap = await adminDb()
+    .collection("reviews")
+    .where("slug", "==", slug)
+    .limit(1)
+    .get();
+  return snap.empty ? null : (snap.docs[0].data() as WritingDoc);
 }

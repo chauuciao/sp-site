@@ -26,6 +26,13 @@ body {
   font-family: var(--font-sans);
 }
 
+/* Imported Goodreads review HTML (M2 interim body) */
+.prose-review br {
+  content: "";
+  display: block;
+  margin-top: 0.4em;
+}
+
 /* Small-caps metadata style used for dates and tags throughout the design */
 .meta-caps {
   font-family: var(--font-sans);
