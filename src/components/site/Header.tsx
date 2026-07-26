@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { SettingsDoc } from "@/lib/data";
+import { CopyEmail } from "./CopyEmail";
 
 export function Header({ settings }: { settings: SettingsDoc }) {
   return (
@@ -8,11 +9,19 @@ export function Header({ settings }: { settings: SettingsDoc }) {
         {settings.wordmark}
       </Link>
       <nav className="flex items-center gap-4 sm:gap-[23px]">
-        {settings.nav.map((item) => (
-          <a key={item.label} href={item.href} className="whitespace-nowrap hover:opacity-60">
-            {item.label}
-          </a>
-        ))}
+        {settings.nav.map((item) =>
+          item.href === "#copy-email" ? (
+            <CopyEmail
+              key={item.label}
+              email={settings.contactEmail}
+              label={item.label}
+            />
+          ) : (
+            <a key={item.label} href={item.href} className="whitespace-nowrap hover:opacity-60">
+              {item.label}
+            </a>
+          ),
+        )}
       </nav>
     </header>
   );

@@ -29,6 +29,7 @@ export interface JourneyFixture {
 
 export const settings = {
   wordmark: "Shrikant Pandey",
+  contactEmail: "pandey.shrikant@gmail.com",
   nav: [
     { label: "Writings", href: "/#writings" },
     { label: "Newsletter", href: "/#newsletter" },
