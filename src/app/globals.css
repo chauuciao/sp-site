@@ -26,6 +26,18 @@ body {
   font-family: var(--font-sans);
 }
 
+/* BlockNote inherits the site's look: transparent on paper, site fonts,
+   no side padding — edit mode and view mode share these rules. */
+.bn-container .bn-editor,
+.bn-container.bn-editor {
+  background: transparent;
+  padding-inline: 0;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 30px;
+  color: color-mix(in srgb, var(--color-ink) 90%, transparent);
+}
+
 /* Imported Goodreads review HTML (M2 interim body) */
 .prose-review br {
   content: "";

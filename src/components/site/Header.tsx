@@ -1,14 +1,31 @@
 import Link from "next/link";
+import { createReview } from "@/app/actions/content";
 import type { SettingsDoc } from "@/lib/data";
 import { CopyEmail } from "./CopyEmail";
 
-export function Header({ settings }: { settings: SettingsDoc }) {
+export function Header({
+  settings,
+  canEdit = false,
+}: {
+  settings: SettingsDoc;
+  canEdit?: boolean;
+}) {
   return (
     <header className="flex items-start justify-between gap-4 p-6 text-[14px] font-medium leading-[14px] sm:gap-6 sm:text-[16px]">
       <Link href="/" className="whitespace-nowrap">
         {settings.wordmark}
       </Link>
       <nav className="flex items-center gap-4 sm:gap-[23px]">
+        {canEdit && (
+          <form action={createReview}>
+            <button
+              type="submit"
+              className="cursor-pointer whitespace-nowrap font-medium underline underline-offset-4 hover:opacity-60"
+            >
+              New Review
+            </button>
+          </form>
+        )}
         {settings.nav.map((item) =>
           item.href === "#copy-email" ? (
             <CopyEmail

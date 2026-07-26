@@ -24,8 +24,12 @@ import { adminDb, firebaseConfigured } from "./firebase/admin";
 
 export type SettingsDoc = typeof fixtureSettings;
 export type WritingDoc = WritingFixture & {
-  /** Verbatim Goodreads review HTML (imported); BlockNote body replaces this in M4 */
+  /** Firestore doc id — needed to save edits */
+  docId?: string;
+  /** Verbatim Goodreads review HTML (imported); superseded by bodyJson once edited */
   reviewHtml?: string | null;
+  /** JSON.stringify'd BlockNote blocks (authoritative body once present) */
+  bodyJson?: string | null;
 };
 export type JourneyDoc = JourneyFixture & { id: string };
 
@@ -71,5 +75,6 @@ export async function getReviewBySlug(slug: string): Promise<WritingDoc | null> 
     .where("slug", "==", slug)
     .limit(1)
     .get();
-  return snap.empty ? null : (snap.docs[0].data() as WritingDoc);
+  if (snap.empty) return null;
+  return { ...(snap.docs[0].data() as WritingDoc), docId: snap.docs[0].id };
 }
