@@ -1,8 +1,8 @@
-import type { ReviewKind } from "@/content/fixtures";
+import { kindHasCreator, type ReviewKind } from "@/content/fixtures";
 
 /**
- * Renders "Bend Sinister *by* Vladimir Nabokov" — Garamond, with the joining
- * word italicised, as in the design. Films use "dir." instead of "by".
+ * Books render "Bend Sinister *by* Vladimir Nabokov", films use "dir.".
+ * Blog and travel entries are plain titles — no creator construction.
  */
 export function SubjectTitle({
   subjectTitle,
@@ -15,6 +15,9 @@ export function SubjectTitle({
   kind: ReviewKind;
   className?: string;
 }) {
+  if (!kindHasCreator(kind) || !creator) {
+    return <span className={`font-serif ${className}`}>{subjectTitle}</span>;
+  }
   return (
     <span className={`font-serif ${className}`}>
       {subjectTitle} <i>{kind === "book" ? "by" : "dir."}</i> {creator}

@@ -11,6 +11,12 @@ const nextConfig: NextConfig = {
   // Bundling it lets the bundler shim the interop. (Worked locally only
   // because Node 24's require(esm) is more permissive.)
   transpilePackages: ["firebase-admin"],
+  images: {
+    remotePatterns: [
+      // uploaded covers / body images served from Firebase Storage
+      { protocol: "https", hostname: "firebasestorage.googleapis.com" },
+    ],
+  },
 };
 
 export default nextConfig;

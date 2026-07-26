@@ -3,7 +3,19 @@
  * Shapes mirror the planned Drizzle schema (see plan: content model).
  */
 
-export type ReviewKind = "book" | "film";
+export type ReviewKind = "book" | "film" | "blog" | "travel";
+
+export const KIND_LABEL: Record<ReviewKind, string> = {
+  book: "Book Review",
+  film: "Film Review",
+  blog: "Blog",
+  travel: "Travel",
+};
+
+/** blog/travel entries are plain titles — no "X by Y" construction */
+export function kindHasCreator(kind: ReviewKind): boolean {
+  return kind === "book" || kind === "film";
+}
 
 export interface WritingFixture {
   slug: string;

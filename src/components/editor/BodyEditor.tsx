@@ -15,14 +15,22 @@ import { useEffect } from "react";
 export default function BodyEditor({
   bodyJson,
   reviewHtml,
+  docId,
   onChange,
 }: {
   bodyJson: string | null | undefined;
   reviewHtml: string | null | undefined;
+  docId: string;
   onChange: (bodyJson: string) => void;
 }) {
   const editor = useCreateBlockNote({
     initialContent: bodyJson ? JSON.parse(bodyJson) : undefined,
+    // drag-drop / paste / slash-menu image blocks route through our pipeline
+    uploadFile: async (file: File) => {
+      const { uploadImage } = await import("@/lib/upload-client");
+      const { url } = await uploadImage(file, { kind: "body", docId });
+      return url;
+    },
   });
 
   // First edit of an imported review: seed the editor from its HTML.

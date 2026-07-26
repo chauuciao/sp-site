@@ -9,8 +9,20 @@ export interface SaveReviewPatch {
   subjectTitle?: string;
   creator?: string;
   blurb?: string | null;
+  kind?: "book" | "film" | "blog" | "travel";
+  /** our own storage/public URL only */
+  thumbnail?: string;
   /** JSON.stringify'd BlockNote blocks (string keeps Firestore happy re nested arrays) */
   bodyJson?: string;
+}
+
+const KINDS = new Set(["book", "film", "blog", "travel"]);
+
+function isOwnAssetUrl(url: string): boolean {
+  return (
+    url.startsWith("/images/") ||
+    url.startsWith("https://firebasestorage.googleapis.com/")
+  );
 }
 
 function slugify(title: string): string {
@@ -35,6 +47,10 @@ export async function saveReview(
   if (typeof patch.creator === "string") clean.creator = patch.creator.trim();
   if (typeof patch.blurb === "string" || patch.blurb === null) clean.blurb = patch.blurb;
   if (typeof patch.bodyJson === "string") clean.bodyJson = patch.bodyJson;
+  if (patch.kind && KINDS.has(patch.kind)) clean.kind = patch.kind;
+  if (typeof patch.thumbnail === "string" && isOwnAssetUrl(patch.thumbnail)) {
+    clean.thumbnail = patch.thumbnail;
+  }
 
   const updatedAt = new Date().toISOString();
   clean.updatedAt = updatedAt;
