@@ -24,6 +24,8 @@ import { adminDb, firebaseConfigured } from "./firebase/admin";
 
 export type SettingsDoc = typeof fixtureSettings;
 export type WritingDoc = WritingFixture & {
+  /** draft = only the signed-in owners see it; absent = published (legacy) */
+  status?: "draft" | "published";
   /** Firestore doc id — needed to save edits */
   docId?: string;
   /** Verbatim Goodreads review HTML (imported); superseded by bodyJson once edited */
@@ -41,7 +43,9 @@ export interface HomePageData {
   live: boolean;
 }
 
-export async function getHomePageData(): Promise<HomePageData> {
+export async function getHomePageData(
+  opts: { includeDrafts?: boolean } = {},
+): Promise<HomePageData> {
   if (!firebaseConfigured()) {
     return {
       settings: fixtureSettings,
@@ -58,9 +62,18 @@ export async function getHomePageData(): Promise<HomePageData> {
     db.collection("journeys").orderBy("sortOrder", "asc").get(),
   ]);
 
+  // status filtering in code, not the query — avoids a composite index and
+  // treats legacy docs without a status as published
+  const all = writingsSnap.docs.map(
+    (d) => ({ ...(d.data() as WritingDoc), docId: d.id }),
+  );
+  const writings = opts.includeDrafts
+    ? all
+    : all.filter((w) => w.status !== "draft");
+
   return {
     settings: (settingsSnap.data() as SettingsDoc | undefined) ?? fixtureSettings,
-    writings: writingsSnap.docs.map((d) => d.data() as WritingDoc),
+    writings,
     journeys: journeysSnap.docs.map((d) => ({ ...(d.data() as JourneyFixture), id: d.id })),
     live: true,
   };
@@ -70,11 +83,18 @@ export async function getReviewBySlug(slug: string): Promise<WritingDoc | null> 
   if (!firebaseConfigured()) {
     return fixtureWritings.find((w) => w.slug === slug) ?? null;
   }
-  const snap = await adminDb()
+  const db = adminDb();
+  const snap = await db
     .collection("reviews")
     .where("slug", "==", slug)
     .limit(1)
     .get();
-  if (snap.empty) return null;
-  return { ...(snap.docs[0].data() as WritingDoc), docId: snap.docs[0].id };
+  if (!snap.empty) {
+    return { ...(snap.docs[0].data() as WritingDoc), docId: snap.docs[0].id };
+  }
+  // fallback: treat the path segment as a doc id — keeps "untitled-…" URLs
+  // alive after the slug is re-derived from the title mid-edit
+  const byId = await db.doc(`reviews/${slug}`).get();
+  if (byId.exists) return { ...(byId.data() as WritingDoc), docId: byId.id };
+  return null;
 }

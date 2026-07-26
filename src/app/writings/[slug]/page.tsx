@@ -15,12 +15,13 @@ export default async function WritingPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [review, { settings, writings }, session] = await Promise.all([
+  const session = await getOwnerSession();
+  const [review, { settings, writings }] = await Promise.all([
     getReviewBySlug(slug),
-    getHomePageData(),
-    getOwnerSession(),
+    getHomePageData({ includeDrafts: !!session }),
   ]);
-  if (!review) notFound();
+  // drafts exist only for the owners
+  if (!review || (review.status === "draft" && !session)) notFound();
 
   const bodyHtml = review.bodyJson ? await renderBodyJson(review.bodyJson) : "";
 

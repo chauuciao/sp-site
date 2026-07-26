@@ -22,7 +22,14 @@ function WritingRow({ writing }: { writing: WritingDoc }) {
             kind={writing.kind}
           />
           </h3>
-          <p className="meta-caps leading-none">{formatDate(writing.date)}</p>
+          <p className="meta-caps leading-none">
+            {formatDate(writing.date)}
+            {writing.status === "draft" && (
+              <span className="ml-3 bg-ink/10 px-2 py-0.5 text-[11px]">
+                Draft
+              </span>
+            )}
+          </p>
         </div>
         <div className="relative aspect-[310/475] w-[76px] shrink-0 border-[1.2px] border-black/5 sm:w-[118px]">
           <Image

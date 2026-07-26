@@ -4,7 +4,12 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { saveReview, type SaveReviewPatch } from "@/app/actions/content";
+import {
+  deleteReview,
+  saveReview,
+  setReviewStatus,
+  type SaveReviewPatch,
+} from "@/app/actions/content";
 import { formatDate } from "@/content/fixtures";
 import type { WritingDoc } from "@/lib/data";
 import { EditToolbar, type SaveState } from "./EditToolbar";
@@ -32,9 +37,13 @@ export function ReviewArticle({
   const router = useRouter();
   const [editing, setEditing] = useState(false);
   const [saveState, setSaveState] = useState<SaveState>("idle");
+  const [status, setStatus] = useState<"draft" | "published">(
+    review.status ?? "published",
+  );
 
   const pending = useRef<SaveReviewPatch>({});
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
+  const slugRef = useRef(review.slug);
 
   const flush = useCallback(async () => {
     if (!review.docId || Object.keys(pending.current).length === 0) return;
@@ -42,7 +51,8 @@ export function ReviewArticle({
     pending.current = {};
     setSaveState("saving");
     try {
-      await saveReview(review.docId, patch);
+      const res = await saveReview(review.docId, patch);
+      if (res.slug) slugRef.current = res.slug;
       setSaveState(Object.keys(pending.current).length ? "dirty" : "saved");
     } catch {
       // merge the failed patch back and retry on next tick
@@ -78,9 +88,40 @@ export function ReviewArticle({
 
   function toggle() {
     if (editing) {
-      void flush().then(() => router.refresh());
+      void flush().then(() => {
+        // slug may have been re-derived from the title on first save
+        if (slugRef.current !== review.slug) {
+          router.replace(`/writings/${slugRef.current}`);
+        } else {
+          router.refresh();
+        }
+      });
     }
     setEditing(!editing);
+  }
+
+  async function publishToggle() {
+    if (!review.docId) return;
+    await flush();
+    const next = status === "draft" ? "published" : "draft";
+    setStatus(next);
+    try {
+      await setReviewStatus(review.docId, next);
+      router.refresh();
+    } catch {
+      setStatus(status); // roll back on failure
+    }
+  }
+
+  async function remove() {
+    if (!review.docId) return;
+    const ok = window.confirm(
+      `Delete “${review.subjectTitle}”? This can’t be undone.`,
+    );
+    if (!ok) return;
+    await deleteReview(review.docId);
+    router.replace("/");
+    router.refresh();
   }
 
   return (
@@ -146,7 +187,10 @@ export function ReviewArticle({
         <EditToolbar
           editing={editing}
           saveState={saveState}
+          status={status}
           onToggle={toggle}
+          onPublishToggle={publishToggle}
+          onDelete={remove}
           onSignOut={signOut}
         />
       )}

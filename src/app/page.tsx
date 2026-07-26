@@ -10,10 +10,10 @@ import { getOwnerSession } from "@/lib/session";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [{ settings, writings, journeys, live }, session] = await Promise.all([
-    getHomePageData(),
-    getOwnerSession(),
-  ]);
+  const session = await getOwnerSession();
+  const { settings, writings, journeys, live } = await getHomePageData({
+    includeDrafts: !!session,
+  });
 
   return (
     <>
