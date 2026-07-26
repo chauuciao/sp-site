@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
 import { SubjectTitle } from "@/components/site/SubjectTitle";
 import { formatDate } from "@/content/fixtures";
@@ -19,7 +20,7 @@ export default async function WritingPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [review, { settings }] = await Promise.all([
+  const [review, { settings, writings }] = await Promise.all([
     getReviewBySlug(slug),
     getHomePageData(),
   ]);
@@ -67,6 +68,7 @@ export default async function WritingPage({
           )}
         </article>
       </main>
+      <Footer settings={settings} writings={writings} />
     </>
   );
 }

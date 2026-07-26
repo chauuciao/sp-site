@@ -50,7 +50,7 @@ export async function getHomePageData(): Promise<HomePageData> {
   const db = adminDb();
   const [settingsSnap, writingsSnap, journeysSnap] = await Promise.all([
     db.doc("settings/singleton").get(),
-    db.collection("reviews").orderBy("date", "desc").limit(24).get(),
+    db.collection("reviews").orderBy("date", "desc").limit(100).get(),
     db.collection("journeys").orderBy("sortOrder", "asc").get(),
   ]);
 
