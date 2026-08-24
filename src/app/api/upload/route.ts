@@ -1,7 +1,6 @@
-import { randomUUID } from "node:crypto";
+import { put } from "@vercel/blob";
 import { NextRequest, NextResponse } from "next/server";
 import sharp, { type Metadata } from "sharp";
-import { adminBucket } from "@/lib/firebase/admin";
 import { getOwnerSession } from "@/lib/session";
 
 export const runtime = "nodejs";
@@ -9,7 +8,10 @@ export const runtime = "nodejs";
 /**
  * Image upload for owners. Raw image bytes in the body (client downscales
  * to ≤2048px first to stay under Vercel's request cap), sharp re-encodes to
- * WebP, lands in Firebase Storage with a download token URL.
+ * WebP, lands in Vercel Blob (public store sp-site-images).
+ *
+ * (Was Firebase Storage; new Firebase projects gate Storage behind the
+ * Blaze billing plan, so Blob — already part of the Vercel project — won.)
  *
  *   POST /api/upload?kind=cover|body&docId=…   body: image bytes
  *   → { url, width, height }
@@ -41,27 +43,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "not an image" }, { status: 415 });
   }
 
-  const token = randomUUID();
   const path =
     kind === "cover"
       ? `covers/${docId}.webp`
       : `body/${docId}/${Date.now().toString(36)}.webp`;
 
   try {
-    const file = adminBucket().file(path);
-    await file.save(out, {
+    const blob = await put(path, out, {
+      access: "public",
       contentType: "image/webp",
-      metadata: { metadata: { firebaseStorageDownloadTokens: token } },
+      addRandomSuffix: true, // cache-safe: replacements get fresh URLs
     });
-    const url = `https://firebasestorage.googleapis.com/v0/b/${
-      adminBucket().name
-    }/o/${encodeURIComponent(path)}?alt=media&token=${token}`;
-    return NextResponse.json({ url, width: meta.width, height: meta.height });
+    return NextResponse.json({ url: blob.url, width: meta.width, height: meta.height });
   } catch (e) {
-    // most likely: Storage not enabled in the Firebase console yet
     console.error("upload failed:", (e as Error).message);
     return NextResponse.json(
-      { error: "storage unavailable — is Firebase Storage enabled?" },
+      { error: "storage unavailable — check BLOB_READ_WRITE_TOKEN" },
       { status: 503 },
     );
   }

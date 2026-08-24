@@ -21,7 +21,7 @@ const KINDS = new Set(["book", "film", "blog", "travel"]);
 function isOwnAssetUrl(url: string): boolean {
   return (
     url.startsWith("/images/") ||
-    url.startsWith("https://firebasestorage.googleapis.com/")
+    /^https:\/\/[\w-]+\.public\.blob\.vercel-storage\.com\//.test(url)
   );
 }
 

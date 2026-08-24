@@ -13,8 +13,8 @@ const nextConfig: NextConfig = {
   transpilePackages: ["firebase-admin"],
   images: {
     remotePatterns: [
-      // uploaded covers / body images served from Firebase Storage
-      { protocol: "https", hostname: "firebasestorage.googleapis.com" },
+      // uploaded covers / body images served from Vercel Blob
+      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
     ],
   },
 };
