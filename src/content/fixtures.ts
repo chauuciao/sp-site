@@ -44,11 +44,7 @@ export interface JourneyFixture {
 export const settings = {
   wordmark: "Shrikant Pandey",
   contactEmail: "pandey.shrikant@gmail.com",
-  nav: [
-    { label: "Writings", href: "/#writings" },
-    { label: "Newsletter", href: "/#newsletter" },
-    { label: "Copy Email", href: "#copy-email" },
-  ],
+  nav: [{ label: "Copy Email", href: "#copy-email" }],
   heroLead: "Shrikant Pandey",
   heroRest:
     "is an engineer by profession and a runner, reader, and film lover by inclination.",
