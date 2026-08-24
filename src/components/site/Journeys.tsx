@@ -35,13 +35,15 @@ function JourneyTile({ tile }: { tile: Tile }) {
   );
 
   return (
-    <li className="relative h-[min(700px,120vw)] w-[min(500px,85vw)] shrink-0 snap-start">
+    <li className="h-[min(700px,120vw)] w-[min(500px,85vw)] shrink-0 snap-start">
+      {/* relative + overflow-hidden on the SAME element: the fill image
+          anchors here, so the hover zoom clips instead of escaping */}
       {tile.href ? (
-        <a href={tile.href} className="group block h-full w-full overflow-hidden">
+        <a href={tile.href} className="group relative block h-full w-full overflow-hidden">
           {inner}
         </a>
       ) : (
-        <div className="group h-full w-full overflow-hidden">{inner}</div>
+        <div className="group relative h-full w-full overflow-hidden">{inner}</div>
       )}
     </li>
   );
