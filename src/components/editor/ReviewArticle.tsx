@@ -149,13 +149,13 @@ export function ReviewArticle({
   return (
     <>
       <article className="mx-auto flex w-full max-w-[705px] flex-col gap-8 pt-16">
-        <div className="group/cover relative aspect-[310/475] w-[140px] border-[1.2px] border-black/5">
+        <div className="group/cover relative w-fit border-[1.2px] border-black/5">
           <Image
             src={thumbnail}
             alt={`Cover of ${review.subjectTitle}`}
-            fill
-            sizes="140px"
-            className="object-cover"
+            width={620}
+            height={950}
+            className="h-[321px] w-auto max-w-full object-cover"
           />
           {editing && (
             <label className="absolute inset-0 flex cursor-pointer items-center justify-center bg-black/0 text-[12px] uppercase tracking-[1px] text-white opacity-0 transition group-hover/cover:bg-black/50 group-hover/cover:opacity-100">

@@ -31,15 +31,15 @@ function WritingRow({ writing }: { writing: WritingDoc }) {
             )}
           </p>
         </div>
-        <div className="relative aspect-[310/475] w-[76px] shrink-0 border-[1.2px] border-black/5 sm:w-[118px]">
-          <Image
-            src={writing.thumbnail}
-            alt=""
-            fill
-            sizes="118px"
-            className="object-cover"
-          />
-        </div>
+        {/* fixed height (1.5x the old cover), width follows the image's own
+            aspect ratio — covers stay portrait, paintings go wide */}
+        <Image
+          src={writing.thumbnail}
+          alt=""
+          width={310}
+          height={475}
+          className="h-[174px] w-auto max-w-[55vw] shrink-0 border-[1.2px] border-black/5 object-cover sm:h-[271px] page:max-w-[420px]"
+        />
       </a>
     </li>
   );

@@ -11,7 +11,7 @@ export function Header({
   canEdit?: boolean;
 }) {
   return (
-    <header className="flex items-start justify-between gap-4 p-6 text-[14px] font-medium leading-[14px] sm:gap-6 sm:text-[16px]">
+    <header className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3 p-6 text-[14px] font-medium leading-[14px] sm:gap-x-6 sm:text-[16px]">
       <Link href="/" className="whitespace-nowrap">
         {settings.wordmark}
       </Link>
