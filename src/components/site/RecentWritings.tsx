@@ -38,7 +38,7 @@ function WritingRow({ writing }: { writing: WritingDoc }) {
           alt=""
           width={310}
           height={475}
-          className="h-[174px] w-auto max-w-[55vw] shrink-0 border-[1.2px] border-black/5 object-cover sm:h-[271px] page:max-w-[420px]"
+          className="h-[174px] w-auto max-w-[174px] shrink-0 border-[1.2px] border-black/5 object-cover sm:h-[271px] sm:max-w-[271px]"
         />
       </a>
     </li>
