@@ -30,6 +30,8 @@ export interface WritingFixture {
   blurb?: string;
   /** 1–5, from his Goodreads shelf where available */
   rating?: number;
+  /** travel entries: country label under the place name */
+  country?: string;
 }
 
 export interface JourneyFixture {
@@ -54,7 +56,7 @@ export const settings = {
     "When away from work you’ll find him training for marathons, moving between fiction and non-fiction, and watching films worth thinking about.",
   writingsTitle: "Recent Writings",
   writingsSubtitle: "Books, Film, Travel, Musings",
-  filterTabs: ["Featured", "Recent", "Books", "Films"],
+  filterTabs: ["Featured", "Recent", "Books", "Films", "Blog"],
   journeysTitle: "Journeys.",
   journeysSubtitle: "Life away from the screen.",
   newsletterTitle: "Keep in touch.",

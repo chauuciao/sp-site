@@ -46,16 +46,18 @@ function WritingRow({ writing }: { writing: WritingDoc }) {
 }
 
 /**
- * Tab semantics:
- *  - Featured: entries with actual written review text — his writings
- *  - Recent:   everything, newest first (the incoming order)
- *  - Books / Films: by kind
+ * Tab semantics (travel entries never appear here — they live in the
+ * Journeys section):
+ *  - Featured: entries with written text or the featured flag
+ *  - Recent:   everything non-travel, newest first (the incoming order)
+ *  - Books / Films / Blog: by kind
  */
 const FILTERS: Record<string, (w: WritingDoc) => boolean> = {
-  featured: (w) => Boolean(w.reviewHtml ?? w.featured),
-  recent: () => true,
+  featured: (w) => w.kind !== "travel" && Boolean(w.reviewHtml ?? w.bodyJson ?? w.featured),
+  recent: (w) => w.kind !== "travel",
   books: (w) => w.kind === "book",
   films: (w) => w.kind === "film",
+  blog: (w) => w.kind === "blog",
 };
 
 export function RecentWritings({

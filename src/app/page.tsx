@@ -34,7 +34,13 @@ export default async function Home() {
             <RecentWritings settings={settings} writings={writings} />
           </div>
         </section>
-        <Journeys settings={settings} journeys={journeys} />
+        <Journeys
+          settings={settings}
+          journeys={journeys}
+          travels={writings.filter(
+            (w) => w.kind === "travel" && (session || w.status !== "draft"),
+          )}
+        />
       </main>
       <Footer settings={settings} writings={writings} />
     </>
