@@ -18,6 +18,7 @@ import {
 } from "@/content/fixtures";
 import type { WritingDoc } from "@/lib/data";
 import { uploadImage } from "@/lib/upload-client";
+import { wordCount } from "@/lib/words";
 import { EditToolbar, type SaveState } from "./EditToolbar";
 import { EditableText } from "./EditableText";
 
@@ -218,7 +219,9 @@ export function ReviewArticle({
             )}
             <span>
               · {formatDate(review.date)}
-              {review.rating ? ` · ${"★".repeat(review.rating)}` : ""}
+              {wordCount(review) > 0
+                ? ` · ${wordCount(review).toLocaleString("en-US")} words`
+                : ""}
             </span>
           </p>
         </div>
@@ -244,7 +247,7 @@ export function ReviewArticle({
           <p className="text-[17px] leading-[30px] text-ink-soft">
             {canEdit
               ? "No text yet — hit Edit below and start writing."
-              : `No written review yet${review.rating ? ` — rated ${"★".repeat(review.rating)}` : ""}.`}
+              : "No written review yet."}
           </p>
         )}
       </article>
