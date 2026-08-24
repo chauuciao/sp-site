@@ -52,16 +52,26 @@ function toHtml(body: string): string {
   const paras = body.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
   return paras
     .map((p) => {
+      if (/^(#[\w-]+\s*)+$/.test(p)) return ""; // pure hashtag lines: noise
       if (p.startsWith("## ")) return `<h2>${esc(p.slice(3))}</h2>`;
-      const oneLine = esc(p)
+      // "_"-prefixed paras and image/meta captions render as italic asides
+      const aside = p.startsWith("_") || /^(Painting|Image|Authors?|Publisher):/.test(p);
+      const text = p.startsWith("_") ? p.slice(1) : p;
+      const oneLine = esc(text)
         .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
         .replace(/\n/g, "<br />");
-      // epigraphs: quote + attribution ("— X" / "~ X") become blockquotes
-      if (/^[“"]/.test(p) && /(\n|^)\s*[—~]/.test(p)) {
+      if (aside) return `<p><em>${oneLine}</em></p>`;
+      // epigraphs ("— X" / "~ X" attribution) and lyric couplets
+      // (quoted line + parenthesised translation) become blockquotes
+      if (
+        (/^[“"]/.test(p) && /(\n|^)\s*[—~]/.test(p)) ||
+        (/^[“"]/.test(p) && /\n\(/.test(p))
+      ) {
         return `<blockquote>${oneLine}</blockquote>`;
       }
       return `<p>${oneLine}</p>`;
     })
+    .filter(Boolean)
     .join("\n");
 }
 

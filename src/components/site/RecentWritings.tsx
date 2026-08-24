@@ -45,19 +45,27 @@ function WritingRow({ writing }: { writing: WritingDoc }) {
   );
 }
 
+function bodyLength(w: WritingDoc): number {
+  return (w.bodyJson?.length ?? 0) + (w.reviewHtml?.length ?? 0);
+}
+
 /**
  * Tab semantics (travel entries never appear here — they live in the
  * Journeys section):
- *  - Featured: entries with written text or the featured flag
- *  - Recent:   everything non-travel, newest first (the incoming order)
- *  - Books / Films / Blog: by kind
+ *  - Featured: the 4 longest written pieces
+ *  - Recent:   the 4 newest non-travel entries (incoming order is date desc)
+ *  - Books / Films / Blog: by kind, unlimited
  */
-const FILTERS: Record<string, (w: WritingDoc) => boolean> = {
-  featured: (w) => w.kind !== "travel" && Boolean(w.reviewHtml ?? w.bodyJson ?? w.featured),
-  recent: (w) => w.kind !== "travel",
-  books: (w) => w.kind === "book",
-  films: (w) => w.kind === "film",
-  blog: (w) => w.kind === "blog",
+const TABS: Record<string, (all: WritingDoc[]) => WritingDoc[]> = {
+  featured: (all) =>
+    all
+      .filter((w) => w.kind !== "travel" && bodyLength(w) > 0)
+      .sort((a, b) => bodyLength(b) - bodyLength(a))
+      .slice(0, 4),
+  recent: (all) => all.filter((w) => w.kind !== "travel").slice(0, 4),
+  books: (all) => all.filter((w) => w.kind === "book"),
+  films: (all) => all.filter((w) => w.kind === "film"),
+  blog: (all) => all.filter((w) => w.kind === "blog"),
 };
 
 export function RecentWritings({
@@ -68,8 +76,8 @@ export function RecentWritings({
   writings: WritingDoc[];
 }) {
   const [active, setActive] = useState(settings.filterTabs[0] ?? "Featured");
-  const predicate = FILTERS[active.toLowerCase()] ?? FILTERS.recent;
-  const visible = writings.filter(predicate);
+  const select = TABS[active.toLowerCase()] ?? TABS.recent;
+  const visible = select(writings);
 
   // renders bare (no section/grid) — the homepage composes it into the
   // shared grid so the featured card can stick alongside it
