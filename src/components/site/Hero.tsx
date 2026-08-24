@@ -1,10 +1,12 @@
 import Image from "next/image";
+import { KIND_LABEL } from "@/content/fixtures";
 import type { SettingsDoc, WritingDoc } from "@/lib/data";
 import { SubjectTitle } from "./SubjectTitle";
 
-/** The forest-green featured review card (design: hero cols 1–5). */
+/** The forest-green hero card: always the latest written entry (design: hero cols 1–5). */
 export function FeaturedCard({ writings }: { writings: WritingDoc[] }) {
-  const featured = writings.find((w) => w.featured) ?? writings[0];
+  // incoming order is date desc; travel lives in Journeys, not here
+  const featured = writings.find((w) => w.kind !== "travel");
   if (!featured) return null;
 
   return (
@@ -29,7 +31,7 @@ export function FeaturedCard({ writings }: { writings: WritingDoc[] }) {
               />
             </h2>
             <p className="text-[16px] uppercase leading-[22.4px] tracking-[1.6px] text-white/50 opacity-80">
-              {featured.kind === "film" ? "Film Review" : "Book Review"}
+              {KIND_LABEL[featured.kind]}
             </p>
           </div>
           {featured.blurb && (
