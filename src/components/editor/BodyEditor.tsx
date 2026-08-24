@@ -36,7 +36,12 @@ export default function BodyEditor({
   // First edit of an imported review: seed the editor from its HTML.
   useEffect(() => {
     if (!bodyJson && reviewHtml) {
-      const blocks = editor.tryParseHTMLToBlocks(reviewHtml);
+      // Goodreads-imported HTML separates paragraphs with double <br>;
+      // convert to real <p>s first or parsing yields a few giant blocks
+      const html = /<p[\s>]/i.test(reviewHtml)
+        ? reviewHtml
+        : `<p>${reviewHtml.replace(/(<br\s*\/?>\s*){2,}/gi, "</p><p>")}</p>`;
+      const blocks = editor.tryParseHTMLToBlocks(html);
       editor.replaceBlocks(editor.document, blocks);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

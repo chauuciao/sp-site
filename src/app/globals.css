@@ -38,11 +38,24 @@ body {
   color: color-mix(in srgb, var(--color-ink) 90%, transparent);
 }
 
-/* Imported Goodreads review HTML (M2 interim body) */
+/* Imported review HTML (Goodreads uses <br>, email imports use <p>) */
 .prose-review br {
   content: "";
   display: block;
   margin-top: 0.4em;
+}
+.prose-review p,
+.prose-review blockquote {
+  margin-bottom: 1.1em;
+}
+.prose-review blockquote {
+  border-left: 2px solid var(--color-line);
+  padding-left: 1em;
+  color: color-mix(in srgb, var(--color-ink) 70%, transparent);
+}
+.prose-review h2 {
+  font-size: 22px;
+  margin: 1.4em 0 0.6em;
 }
 
 /* Small-caps metadata style used for dates and tags throughout the design */
