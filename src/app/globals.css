@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  /* Palette lifted from the Figma design (node 0:3) */
+  --color-paper: #f8f8f6;
+  --color-ink: #050505;
+  --color-ink-soft: rgba(5, 5, 5, 0.5);
+  --color-forest: #2b4742;
+  --color-date: #948f89;
+  --color-line: #e6e6e6;
+  --color-heading-soft: #5c5c5c;
+
+  /* BDO Grotesk in the design is a commercial face; Schibsted Grotesk is the
+     licensed-free stand-in. Swap --font-sans if a BDO licence appears. */
+  --font-sans: var(--font-grotesk), system-ui, sans-serif;
+  --font-serif: var(--font-garamond), Georgia, serif;
+  --font-mono: var(--font-geist-mono), monospace;
+
+  /* The design's 16-column / 10px-gap grid at 1710px */
+  --breakpoint-page: 1100px;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/* BlockNote inherits the site's look: transparent on paper, site fonts,
+   no side padding — edit mode and view mode share these rules. */
+.bn-container .bn-editor,
+.bn-container.bn-editor {
+  background: transparent;
+  padding-inline: 0;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 30px;
+  color: color-mix(in srgb, var(--color-ink) 90%, transparent);
+}
+
+/* Imported Goodreads review HTML (M2 interim body) */
+.prose-review br {
+  content: "";
+  display: block;
+  margin-top: 0.4em;
+}
+
+/* Small-caps metadata style used for dates and tags throughout the design */
+.meta-caps {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-date);
+}
