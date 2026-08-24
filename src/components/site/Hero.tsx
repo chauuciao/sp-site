@@ -3,14 +3,37 @@ import { KIND_LABEL } from "@/content/fixtures";
 import type { SettingsDoc, WritingDoc } from "@/lib/data";
 import { SubjectTitle } from "./SubjectTitle";
 
-/** The forest-green hero card: always the latest written entry (design: hero cols 1–5). */
+/**
+ * Hero card palette: deep editorial tones, all safe under white text.
+ * The slug hash picks one deterministically — same post, same colour;
+ * new hero, (usually) new colour. Forest green stays the design's anchor.
+ */
+const HERO_COLORS = [
+  "#2b4742", // forest (the original)
+  "#472b33", // wine
+  "#2b3247", // midnight
+  "#47372b", // umber
+  "#3a2b47", // plum
+];
+
+function heroColor(slug: string): string {
+  let h = 0;
+  for (let i = 0; i < slug.length; i++) h = (h * 31 + slug.charCodeAt(i)) | 0;
+  return HERO_COLORS[Math.abs(h) % HERO_COLORS.length];
+}
+
+/** The hero card: always the latest written entry (design: hero cols 1–5). */
 export function FeaturedCard({ writings }: { writings: WritingDoc[] }) {
   // incoming order is date desc; travel lives in Journeys, not here
   const featured = writings.find((w) => w.kind !== "travel");
   if (!featured) return null;
 
   return (
-    <a href={`/writings/${featured.slug}`} className="block bg-forest p-8">
+    <a
+      href={`/writings/${featured.slug}`}
+      className="block p-8"
+      style={{ backgroundColor: heroColor(featured.slug) }}
+    >
       <div className="flex h-full min-h-[492px] flex-col justify-between gap-10">
         <div className="relative h-[200px] w-[131px] border-[1.2px] border-black/5">
           <Image
