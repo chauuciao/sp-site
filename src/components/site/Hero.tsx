@@ -73,7 +73,7 @@ export function HeroIntro({ settings }: { settings: SettingsDoc }) {
   return (
     /* 330px = header (~62) + section's 220px top padding + 48px bottom gap:
        hero fills the first viewport, nothing touches the fold */
-    <div className="flex flex-col justify-end page:min-h-[calc(100svh-330px)] page:max-w-[705px]">
+    <div className="flex flex-col justify-end page:min-h-[calc(100svh-330px)]">
       <h1 className="text-display tracking-[-1.2px]">
         {settings.heroLead}{" "}
         <span className="text-ink-soft">

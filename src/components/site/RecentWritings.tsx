@@ -84,7 +84,7 @@ export function RecentWritings({
   return (
     <div
       id="writings"
-      className="flex flex-col gap-10 pt-16 page:max-w-[705px] page:pt-[120px]"
+      className="flex flex-col gap-10 pt-16 page:pt-[120px]"
     >
           <SectionHeading
             soft={settings.writingsTitle}
