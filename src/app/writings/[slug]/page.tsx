@@ -28,7 +28,7 @@ export default async function WritingPage({
   return (
     <>
       <Header settings={settings} canEdit={!!session} />
-      <main className="px-6 pb-24">
+      <main id="reader-surface" className="reader-surface px-6 pb-24">
         <ReviewArticle review={review} bodyHtml={bodyHtml} canEdit={!!session} />
       </main>
       <Footer settings={settings} writings={writings} />

@@ -47,15 +47,29 @@ body {
   font-family: var(--font-sans);
 }
 
+/* Reader settings (article pages): a surface the Aa panel re-themes.
+   --reader-* vars are set inline by ReaderSettings; ink-based Tailwind
+   colors follow automatically because they reference --color-ink. */
+.reader-surface {
+  background: var(--reader-bg, transparent);
+  --color-ink: var(--reader-ink, #050505);
+}
+.reader-body {
+  font-family: var(--reader-font, var(--font-sans));
+  font-size: calc(17px * var(--reader-scale, 1));
+  line-height: 1.76;
+  color: color-mix(in srgb, var(--color-ink) 90%, transparent);
+}
+
 /* BlockNote inherits the site's look: transparent on paper, site fonts,
    no side padding — edit mode and view mode share these rules. */
 .bn-container .bn-editor,
 .bn-container.bn-editor {
   background: transparent;
   padding-inline: 0;
-  font-family: var(--font-sans);
-  font-size: 17px;
-  line-height: 30px;
+  font-family: var(--reader-font, var(--font-sans));
+  font-size: calc(17px * var(--reader-scale, 1));
+  line-height: 1.76;
   color: color-mix(in srgb, var(--color-ink) 90%, transparent);
 }
 

@@ -19,6 +19,7 @@ import {
 import type { WritingDoc } from "@/lib/data";
 import { uploadImage } from "@/lib/upload-client";
 import { wordCount } from "@/lib/words";
+import { ReaderSettings } from "@/components/reader/ReaderSettings";
 import { EditToolbar, type SaveState } from "./EditToolbar";
 import { EditableText } from "./EditableText";
 
@@ -196,6 +197,7 @@ export function ReviewArticle({
               </>
             )}
           </h1>
+          <div className="flex items-start justify-between gap-4">
           <p className="meta-caps flex items-center gap-2">
             {editing ? (
               // same text style as the rendered label; only the affordance differs
@@ -224,6 +226,8 @@ export function ReviewArticle({
                 : ""}
             </span>
           </p>
+          <ReaderSettings />
+          </div>
         </div>
 
         {editing ? (
@@ -235,16 +239,16 @@ export function ReviewArticle({
           />
         ) : bodyHtml ? (
           <div
-            className="bn-container bn-editor text-[17px] leading-[30px] text-ink/90"
+            className="bn-container bn-editor reader-body"
             dangerouslySetInnerHTML={{ __html: bodyHtml }}
           />
         ) : review.reviewHtml ? (
           <div
-            className="prose-review text-[17px] leading-[30px] text-ink/90"
+            className="prose-review reader-body"
             dangerouslySetInnerHTML={{ __html: review.reviewHtml }}
           />
         ) : (
-          <p className="text-[17px] leading-[30px] text-ink-soft">
+          <p className="reader-body text-ink-soft">
             {canEdit
               ? "No text yet — hit Edit below and start writing."
               : "No written review yet."}
