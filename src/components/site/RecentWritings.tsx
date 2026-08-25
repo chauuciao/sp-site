@@ -15,7 +15,7 @@ function WritingRow({ writing }: { writing: WritingDoc }) {
         className="group flex items-start justify-between gap-8 py-[15px]"
       >
         <div className="flex flex-col gap-2 pt-2">
-          <h3 className="text-[22px] leading-[1.15] tracking-[-0.78px] group-hover:opacity-60 sm:text-[26px] sm:leading-[30px]">
+          <h3 className="text-title tracking-[-0.78px] group-hover:opacity-60">
           <SubjectTitle
             subjectTitle={writing.subjectTitle}
             creator={writing.creator}

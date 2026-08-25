@@ -35,7 +35,7 @@ export function Footer({
             {recent.map((w) => (
               <li key={w.slug} className="border-b border-line py-[15px]">
                 <a href={`/writings/${w.slug}`} className="flex flex-col gap-2 hover:opacity-60">
-                  <h3 className="font-serif text-[22px] leading-[1.15] tracking-[-0.78px] sm:text-[26px] sm:leading-[30px]">
+                  <h3 className="font-serif text-title tracking-[-0.78px]">
                     <SubjectTitle
                       subjectTitle={w.subjectTitle}
                       creator={w.creator}

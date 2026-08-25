@@ -31,10 +31,12 @@ export function FeaturedCard({ writings }: { writings: WritingDoc[] }) {
   return (
     <a
       href={`/writings/${featured.slug}`}
-      className="block p-8"
+      /* fixed to HeroIntro's height so card and intro share a bottom edge;
+         overflow-hidden + clamped blurb keep long content inside */
+      className="flex flex-col overflow-hidden p-8 page:h-[calc(100svh-330px)]"
       style={{ backgroundColor: heroColor(featured.slug) }}
     >
-      <div className="flex h-full min-h-[492px] flex-col justify-between gap-10">
+      <div className="flex min-h-[492px] flex-1 flex-col justify-between gap-10">
         <div className="relative h-[200px] w-[131px] border-[1.2px] border-black/5">
           <Image
             src={featured.thumbnail}
@@ -46,7 +48,7 @@ export function FeaturedCard({ writings }: { writings: WritingDoc[] }) {
         </div>
         <div className="flex flex-col gap-7 pb-3">
           <div className="flex flex-col gap-1">
-            <h2 className="text-[26px] leading-[1.4] text-white sm:text-[32px] sm:leading-[48px]">
+            <h2 className="text-card text-white">
               <SubjectTitle
                 subjectTitle={featured.subjectTitle}
                 creator={featured.creator}
@@ -58,7 +60,7 @@ export function FeaturedCard({ writings }: { writings: WritingDoc[] }) {
             </p>
           </div>
           {featured.blurb && (
-            <p className="text-[16px] leading-[27px] text-white opacity-80">
+            <p className="line-clamp-4 text-[16px] leading-[27px] text-white opacity-80">
               {featured.blurb}
             </p>
           )}
@@ -71,10 +73,10 @@ export function FeaturedCard({ writings }: { writings: WritingDoc[] }) {
 /** The big intro paragraph (design: hero cols 8–15, bottom-aligned). */
 export function HeroIntro({ settings }: { settings: SettingsDoc }) {
   return (
-    /* 282px = header (~62) + the section's 220px top padding: the intro cell
-       stretches so the first viewport holds only the hero, writings below the fold */
-    <div className="flex flex-col justify-end page:min-h-[calc(100svh-282px)] page:max-w-[705px]">
-      <h1 className="text-[28px] leading-[1.2] tracking-[-1.2px] sm:text-[36px]">
+    /* 330px = header (~62) + section's 220px top padding + 48px bottom gap:
+       hero fills the first viewport, nothing touches the fold */
+    <div className="flex flex-col justify-end page:min-h-[calc(100svh-330px)] page:max-w-[705px]">
+      <h1 className="text-display tracking-[-1.2px]">
         {settings.heroLead}{" "}
         <span className="text-ink-soft">
           {settings.heroRest}

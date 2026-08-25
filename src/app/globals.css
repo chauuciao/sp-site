@@ -18,6 +18,20 @@
 
   /* The design's 16-column / 10px-gap grid at 1710px */
   --breakpoint-page: 1100px;
+
+  /* Fluid type scale: each size glides with viewport width from its mobile
+     value to the Figma's desktop value (reached ~1440px), then holds.
+     Body/meta sizes stay fixed — only display sizes breathe. */
+  --text-display: clamp(28px, 23.5px + 0.87vw, 36px); /* section + hero headings */
+  --text-display--line-height: 1.15;
+  --text-title: clamp(22px, 20px + 0.42vw, 26px); /* serif row titles */
+  --text-title--line-height: 1.15;
+  --text-article: clamp(32px, 29px + 0.76vw, 40px); /* article page h1 */
+  --text-article--line-height: 1.2;
+  --text-card: clamp(26px, 23.8px + 0.63vw, 32px); /* hero card title */
+  --text-card--line-height: 1.45;
+  --text-place: clamp(44px, 36.6px + 2.08vw, 64px); /* journey tile names */
+  --text-place--line-height: 1.4;
 }
 
 body {

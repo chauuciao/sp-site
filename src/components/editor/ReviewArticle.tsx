@@ -177,7 +177,7 @@ export function ReviewArticle({
           <p className="text-[13px] text-red-700">{uploadError}</p>
         )}
         <div className="flex flex-col gap-3">
-          <h1 className="font-serif text-[32px] leading-[1.2] tracking-[-0.9px] sm:text-[40px]">
+          <h1 className="font-serif text-article tracking-[-0.9px]">
             <EditableText
               value={review.subjectTitle}
               editing={editing}
