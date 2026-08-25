@@ -248,7 +248,7 @@ export function ReviewArticle({
             dangerouslySetInnerHTML={{ __html: review.reviewHtml }}
           />
         ) : (
-          <p className="reader-body text-ink-soft">
+          <p className="reader-body opacity-60">
             {canEdit
               ? "No text yet — hit Edit below and start writing."
               : "No written review yet."}

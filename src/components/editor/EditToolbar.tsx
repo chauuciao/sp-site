@@ -32,7 +32,9 @@ export function EditToolbar({
   onSignOut: () => void;
 }) {
   return (
-    <div className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-4 bg-ink px-5 py-3 text-[13px] text-white shadow-lg">
+    // fixed literal colour, NOT bg-ink: inside the reader surface the ink
+    // var flips light on dark themes and the toolbar would wash out
+    <div className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-4 bg-[#050505] px-5 py-3 text-[13px] text-white shadow-lg">
       {status === "draft" && (
         <span className="bg-white/15 px-2 py-0.5 text-[11px] uppercase tracking-[1px] text-white/80">
           Draft
