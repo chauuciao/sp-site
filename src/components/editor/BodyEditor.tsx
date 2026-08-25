@@ -78,11 +78,18 @@ export default function BodyEditor({
     initialContent: bodyJson
       ? (sanitize(JSON.parse(bodyJson)) as never)
       : undefined,
-    // drag-drop / paste / slash-menu image blocks route through our pipeline
+    // drag-drop / paste / slash-menu image blocks route through our pipeline.
+    // BlockNote swallows upload errors silently ("Add image" just does
+    // nothing) — surface them so a failed photo isn't a mystery.
     uploadFile: async (file: File) => {
       const { uploadImage } = await import("@/lib/upload-client");
-      const { url } = await uploadImage(file, { kind: "body", docId });
-      return url;
+      try {
+        const { url } = await uploadImage(file, { kind: "body", docId });
+        return url;
+      } catch (e) {
+        window.alert(`Couldn’t add the image: ${(e as Error).message}`);
+        throw e;
+      }
     },
   });
 
