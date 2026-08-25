@@ -11,6 +11,12 @@ const nextConfig: NextConfig = {
   // Bundling it lets the bundler shim the interop. (Worked locally only
   // because Node 24's require(esm) is more permissive.)
   transpilePackages: ["firebase-admin"],
+  // sharp loads libvips via dlopen at a computed path; the file tracer
+  // can't see that, so the shared library gets dropped from the deployed
+  // function. Force the whole @img tree in for the upload route.
+  outputFileTracingIncludes: {
+    "/api/upload": ["node_modules/@img/**"],
+  },
   images: {
     remotePatterns: [
       // uploaded covers / body images served from Vercel Blob
