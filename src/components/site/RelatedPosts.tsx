@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { KIND_LABEL } from "@/content/fixtures";
+import { formatDate, KIND_LABEL } from "@/content/fixtures";
 import type { WritingDoc } from "@/lib/data";
 import { SectionHeading } from "./SectionHeading";
 
@@ -20,7 +20,7 @@ export function RelatedPosts({
   const pad = others.filter(
     (w) => w.kind !== current.kind && w.kind !== "travel",
   );
-  const picks = [...sameKind, ...pad].slice(0, 3);
+  const picks = [...sameKind, ...pad].slice(0, 4);
   if (picks.length === 0) return null;
 
   return (
@@ -32,7 +32,8 @@ export function RelatedPosts({
         {picks.map((w) => (
           <li
             key={w.slug}
-            className="h-[min(700px,120vw)] w-[min(500px,85vw)] shrink-0 snap-start"
+            // four fit inside the 1710 canvas: (1710 - 48 - 3*12)/4 ≈ 405
+            className="h-[min(567px,120vw)] w-[min(405px,85vw)] shrink-0 snap-start"
           >
             <a
               href={`/writings/${w.slug}`}
@@ -50,9 +51,9 @@ export function RelatedPosts({
               <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/55 to-black/70 transition-opacity duration-500 group-hover:opacity-75" />
               <div className="absolute inset-0 flex flex-col items-center justify-between px-8 py-12 text-center text-white">
                 <p className="text-[16px] leading-6 tracking-[-0.31px] [text-shadow:0_1px_8px_rgba(0,0,0,0.8)]">
-                  {new Date(w.date + "T00:00:00").getFullYear()}
+                  {formatDate(w.date)}
                 </p>
-                <p className="font-serif text-[clamp(28px,2.3vw,40px)] italic leading-[1.35] [text-shadow:0_2px_24px_rgba(0,0,0,0.9),0_1px_4px_rgba(0,0,0,0.6)]">
+                <p className="font-serif text-[clamp(24px,1.9vw,32px)] italic leading-[1.35] [text-shadow:0_2px_24px_rgba(0,0,0,0.9),0_1px_4px_rgba(0,0,0,0.6)]">
                   {w.subjectTitle}
                 </p>
                 <p className="text-[16px] leading-6 tracking-[-0.31px] opacity-80 [text-shadow:0_1px_8px_rgba(0,0,0,0.8)]">
