@@ -1,23 +1,41 @@
 import { put } from "@vercel/blob";
 import { NextRequest, NextResponse } from "next/server";
-import sharp, { type Metadata } from "sharp";
 import { getOwnerSession } from "@/lib/session";
 
 export const runtime = "nodejs";
 
 /**
  * Image upload for owners. Raw image bytes in the body (client downscales
- * to ≤2048px first to stay under Vercel's request cap), sharp re-encodes to
- * WebP, lands in Vercel Blob (public store sp-site-images).
+ * to ≤2048px first), re-encoded to WebP via sharp when available, stored
+ * in Vercel Blob (public store sp-site-images).
  *
- * (Was Firebase Storage; new Firebase projects gate Storage behind the
- * Blaze billing plan, so Blob — already part of the Vercel project — won.)
+ * sharp is a native module and has failed to load in production before
+ * (missing linux binaries) — if it can't load, the client-downscaled
+ * bytes are stored as-is rather than failing the upload. next/image
+ * optimizes on delivery either way.
  *
  *   POST /api/upload?kind=cover|body&docId=…   body: image bytes
  *   → { url, width, height }
+ *   GET  /api/upload  → { sharp: boolean }  (deploy healthcheck)
  */
 const LIMITS = { cover: 900, body: 1600 } as const;
 const MAX_BYTES = 15 * 1024 * 1024;
+
+type SharpModule = (typeof import("sharp"))["default"];
+
+async function loadSharp(): Promise<SharpModule | null> {
+  try {
+    return (await import("sharp")).default;
+  } catch (e) {
+    console.error("sharp unavailable, storing originals:", (e as Error).message);
+    return null;
+  }
+}
+
+export async function GET() {
+  const sharp = await loadSharp();
+  return NextResponse.json({ sharp: !!sharp });
+}
 
 export async function POST(req: NextRequest) {
   const session = await getOwnerSession();
@@ -31,30 +49,45 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "bad size" }, { status: 413 });
   }
 
-  let out: Buffer, meta: Metadata;
-  try {
-    const pipeline = sharp(raw).rotate().resize({
-      width: LIMITS[kind],
-      withoutEnlargement: true,
-    });
-    out = await pipeline.webp({ quality: 82 }).toBuffer();
-    meta = await sharp(out).metadata();
-  } catch {
+  const sharp = await loadSharp();
+  let out = raw;
+  let contentType = req.headers.get("content-type") ?? "application/octet-stream";
+  let ext = contentType.includes("png") ? "png" : "jpg";
+  let width: number | undefined;
+  let height: number | undefined;
+
+  if (sharp) {
+    try {
+      out = await sharp(raw)
+        .rotate()
+        .resize({ width: LIMITS[kind], withoutEnlargement: true })
+        .webp({ quality: 82 })
+        .toBuffer();
+      const meta = await sharp(out).metadata();
+      width = meta.width;
+      height = meta.height;
+      contentType = "image/webp";
+      ext = "webp";
+    } catch {
+      return NextResponse.json({ error: "not an image" }, { status: 415 });
+    }
+  } else if (!contentType.startsWith("image/")) {
+    // no sharp to sniff bytes — at least require an image content type
     return NextResponse.json({ error: "not an image" }, { status: 415 });
   }
 
   const path =
     kind === "cover"
-      ? `covers/${docId}.webp`
-      : `body/${docId}/${Date.now().toString(36)}.webp`;
+      ? `covers/${docId}.${ext}`
+      : `body/${docId}/${Date.now().toString(36)}.${ext}`;
 
   try {
     const blob = await put(path, out, {
       access: "public",
-      contentType: "image/webp",
+      contentType,
       addRandomSuffix: true, // cache-safe: replacements get fresh URLs
     });
-    return NextResponse.json({ url: blob.url, width: meta.width, height: meta.height });
+    return NextResponse.json({ url: blob.url, width, height });
   } catch (e) {
     console.error("upload failed:", (e as Error).message);
     return NextResponse.json(
