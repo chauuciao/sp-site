@@ -53,6 +53,9 @@ body {
 .reader-surface {
   background: var(--reader-bg, transparent);
   --color-ink: var(--reader-ink, #050505);
+  /* re-root inherited text colour: elements without their own colour
+     (like the article h1) must follow the theme ink, not the body's */
+  color: var(--reader-ink, var(--color-ink));
 }
 .reader-body {
   font-family: var(--reader-font, var(--font-sans));

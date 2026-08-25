@@ -82,7 +82,7 @@ export function ReaderSettings() {
         aria-label="Reading settings"
         aria-expanded={open}
         onClick={() => setOpen(!open)}
-        className="cursor-pointer border border-black/10 bg-white/60 px-3 py-1.5 font-serif text-[15px] leading-none text-ink hover:bg-white"
+        className="cursor-pointer border border-black/10 bg-white/60 px-3 py-1.5 font-serif text-[15px] leading-none text-[#141414] hover:bg-white"
       >
         Aa
       </button>
@@ -99,7 +99,7 @@ export function ReaderSettings() {
                 aria-label="Smaller text"
                 disabled={scaleIdx <= 0}
                 onClick={() => update({ scale: SCALES[Math.max(0, scaleIdx - 1)] })}
-                className="cursor-pointer border border-black/10 px-3 py-1 text-[13px] text-ink hover:bg-black/5 disabled:opacity-30"
+                className="cursor-pointer border border-black/10 px-3 py-1 text-[13px] text-[#141414] hover:bg-black/5 disabled:opacity-30"
               >
                 A−
               </button>
@@ -110,7 +110,7 @@ export function ReaderSettings() {
                 onClick={() =>
                   update({ scale: SCALES[Math.min(SCALES.length - 1, scaleIdx + 1)] })
                 }
-                className="cursor-pointer border border-black/10 px-3 py-1 text-[17px] text-ink hover:bg-black/5 disabled:opacity-30"
+                className="cursor-pointer border border-black/10 px-3 py-1 text-[17px] text-[#141414] hover:bg-black/5 disabled:opacity-30"
               >
                 A+
               </button>
@@ -127,7 +127,7 @@ export function ReaderSettings() {
                   key={f}
                   type="button"
                   onClick={() => update({ font: f })}
-                  className={`cursor-pointer border px-3 py-1 text-[13px] text-ink hover:bg-black/5 ${
+                  className={`cursor-pointer border px-3 py-1 text-[13px] text-[#141414] hover:bg-black/5 ${
                     prefs.font === f ? "border-black/60" : "border-black/10"
                   } ${f === "serif" ? "font-serif" : ""}`}
                 >
