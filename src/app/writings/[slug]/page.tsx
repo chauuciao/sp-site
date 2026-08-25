@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ReviewArticle } from "@/components/editor/ReviewArticle";
 import { Footer } from "@/components/site/Footer";
+import { RelatedPosts } from "@/components/site/RelatedPosts";
 import { Header } from "@/components/site/Header";
 import { renderBodyJson } from "@/lib/blocknote-server";
 import { getReviewBySlug, getHomePageData } from "@/lib/data";
@@ -31,6 +32,7 @@ export default async function WritingPage({
       <main id="reader-surface" className="reader-surface px-6 pb-24">
         <ReviewArticle review={review} bodyHtml={bodyHtml} canEdit={!!session} />
       </main>
+      <RelatedPosts current={review} writings={writings} />
       <Footer settings={settings} writings={writings} />
     </>
   );
