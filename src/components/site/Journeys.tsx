@@ -23,11 +23,11 @@ function JourneyTile({ tile }: { tile: Tile }) {
       />
       <div className="absolute inset-0 bg-black/[0.37] transition-colors duration-500 group-hover:bg-black/[0.25]" />
       <div className="absolute inset-0 flex flex-col items-center justify-between py-12 text-center text-white">
-        <p className="text-[16px] leading-6 tracking-[-0.31px]">{tile.year}</p>
-        <p className="font-serif text-place italic">
+        <p className="text-[16px] leading-6 tracking-[-0.31px] [text-shadow:0_1px_8px_rgba(0,0,0,0.6)]">{tile.year}</p>
+        <p className="font-serif text-place italic [text-shadow:0_2px_20px_rgba(0,0,0,0.7)]">
           {tile.place}
         </p>
-        <p className="text-[16px] leading-6 tracking-[-0.31px] opacity-60">
+        <p className="text-[16px] leading-6 tracking-[-0.31px] opacity-70 [text-shadow:0_1px_8px_rgba(0,0,0,0.6)]">
           {tile.country}
         </p>
       </div>

@@ -45,15 +45,17 @@ export function RelatedPosts({
                 sizes="(max-width: 640px) 85vw, 500px"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-black/[0.45] transition-colors duration-500 group-hover:bg-black/[0.3]" />
+              {/* gradient scrim: covers are light and text-heavy, so the
+                  middle/bottom (where our text sits) gets more weight */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/55 to-black/70 transition-opacity duration-500 group-hover:opacity-75" />
               <div className="absolute inset-0 flex flex-col items-center justify-between px-8 py-12 text-center text-white">
-                <p className="text-[16px] leading-6 tracking-[-0.31px]">
+                <p className="text-[16px] leading-6 tracking-[-0.31px] [text-shadow:0_1px_8px_rgba(0,0,0,0.8)]">
                   {new Date(w.date + "T00:00:00").getFullYear()}
                 </p>
-                <p className="font-serif text-[clamp(28px,2.3vw,40px)] italic leading-[1.35]">
+                <p className="font-serif text-[clamp(28px,2.3vw,40px)] italic leading-[1.35] [text-shadow:0_2px_24px_rgba(0,0,0,0.9),0_1px_4px_rgba(0,0,0,0.6)]">
                   {w.subjectTitle}
                 </p>
-                <p className="text-[16px] leading-6 tracking-[-0.31px] opacity-60">
+                <p className="text-[16px] leading-6 tracking-[-0.31px] opacity-80 [text-shadow:0_1px_8px_rgba(0,0,0,0.8)]">
                   {KIND_LABEL[w.kind]}
                 </p>
               </div>
