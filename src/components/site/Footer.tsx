@@ -20,7 +20,8 @@ export function Footer({
 
   return (
     <footer id="newsletter" className="bg-ink/5 px-6 py-12">
-      <div className="flex flex-col gap-12 page:grid page:grid-cols-16 page:gap-x-[10px]">
+      {/* band full-bleed, content capped to the design canvas */}
+      <div className="mx-auto flex w-full max-w-[1710px] flex-col gap-12 page:grid page:grid-cols-16 page:gap-x-[10px]">
         <div className="order-2 bg-white p-6 page:order-none page:col-[1/span_5]">
           <div className="relative aspect-square w-full max-w-[473px]">
             <Image

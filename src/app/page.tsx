@@ -21,7 +21,9 @@ export default async function Home() {
       <main data-content-source={live ? "firestore" : "fixtures"}>
         {/* Hero + writings share one grid: the featured card cell spans both
             rows so the card can stick while the list scrolls beside it. */}
-        <section className="flex flex-col gap-12 px-6 pt-12 pb-24 page:grid page:grid-cols-16 page:grid-rows-[auto_1fr] page:gap-x-[10px] page:gap-y-0 page:pt-[220px]">
+        {/* capped at the design's 1710px canvas — wider screens get margins,
+            proportions hold */}
+        <section className="mx-auto flex w-full max-w-[1710px] flex-col gap-12 px-6 pt-12 pb-24 page:grid page:grid-cols-16 page:grid-rows-[auto_1fr] page:gap-x-[10px] page:gap-y-0 page:pt-[220px]">
           <div className="order-2 page:order-none page:col-[1/span_5] page:row-[1/span_2]">
             <div className="page:sticky page:top-6">
               <FeaturedCard writings={writings} />

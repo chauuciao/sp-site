@@ -83,7 +83,7 @@ export function Journeys({
 
   return (
     <section id="journeys">
-      <div className="flex flex-col gap-1 p-6">
+      <div className="mx-auto flex w-full max-w-[1710px] flex-col gap-1 p-6">
         <SectionHeading
           soft={settings.journeysTitle}
           strong={settings.journeysSubtitle}
