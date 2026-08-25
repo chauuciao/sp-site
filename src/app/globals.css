@@ -34,6 +34,13 @@
   --text-place--line-height: 1.4;
 }
 
+:root {
+  /* Cover size shared by the hero card and the article page: ~321px on
+     tall screens, shrinking with viewport height so the hero card's text
+     never gets squeezed out. */
+  --cover-height: clamp(200px, 32svh, 321px);
+}
+
 body {
   background: var(--color-paper);
   color: var(--color-ink);

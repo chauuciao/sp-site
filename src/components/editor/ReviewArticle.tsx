@@ -155,7 +155,7 @@ export function ReviewArticle({
             alt={`Cover of ${review.subjectTitle}`}
             width={620}
             height={950}
-            className="h-[321px] w-auto max-w-full object-cover"
+            className="h-[var(--cover-height)] w-auto max-w-full object-cover"
           />
           {editing && (
             <label className="absolute inset-0 flex cursor-pointer items-center justify-center bg-black/0 text-[12px] uppercase tracking-[1px] text-white opacity-0 transition group-hover/cover:bg-black/50 group-hover/cover:opacity-100">

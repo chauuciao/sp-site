@@ -36,16 +36,14 @@ export function FeaturedCard({ writings }: { writings: WritingDoc[] }) {
       className="flex flex-col overflow-hidden p-8 page:h-[calc(100svh-330px)]"
       style={{ backgroundColor: heroColor(featured.slug) }}
     >
-      <div className="flex min-h-[492px] flex-1 flex-col justify-between gap-10">
-        <div className="relative h-[200px] w-[131px] border-[1.2px] border-black/5">
-          <Image
-            src={featured.thumbnail}
-            alt={`Cover of ${featured.subjectTitle}`}
-            fill
-            sizes="131px"
-            className="object-cover"
-          />
-        </div>
+      <div className="flex min-h-[492px] flex-1 flex-col justify-between gap-10 page:min-h-0">
+        <Image
+          src={featured.thumbnail}
+          alt={`Cover of ${featured.subjectTitle}`}
+          width={620}
+          height={950}
+          className="h-[var(--cover-height)] min-h-[120px] w-auto max-w-full shrink self-start border-[1.2px] border-black/5"
+        />
         <div className="flex flex-col gap-7 pb-3">
           <div className="flex flex-col gap-1">
             <h2 className="text-card text-white">
@@ -60,7 +58,7 @@ export function FeaturedCard({ writings }: { writings: WritingDoc[] }) {
             </p>
           </div>
           {featured.blurb && (
-            <p className="line-clamp-4 text-[16px] leading-[27px] text-white opacity-80">
+            <p className="line-clamp-3 text-[16px] leading-[27px] text-white opacity-80">
               {featured.blurb}
             </p>
           )}
