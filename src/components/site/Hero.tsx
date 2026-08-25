@@ -71,7 +71,9 @@ export function FeaturedCard({ writings }: { writings: WritingDoc[] }) {
 /** The big intro paragraph (design: hero cols 8–15, bottom-aligned). */
 export function HeroIntro({ settings }: { settings: SettingsDoc }) {
   return (
-    <div className="flex flex-col justify-end page:min-h-[556px] page:max-w-[705px]">
+    /* 282px = header (~62) + the section's 220px top padding: the intro cell
+       stretches so the first viewport holds only the hero, writings below the fold */
+    <div className="flex flex-col justify-end page:min-h-[calc(100svh-282px)] page:max-w-[705px]">
       <h1 className="text-[28px] leading-[1.2] tracking-[-1.2px] sm:text-[36px]">
         {settings.heroLead}{" "}
         <span className="text-ink-soft">
