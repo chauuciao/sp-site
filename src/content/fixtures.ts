@@ -47,9 +47,9 @@ export const settings = {
   nav: [{ label: "Copy Email", href: "#copy-email" }],
   heroLead: "Shrikant Pandey",
   heroRest:
-    "is an engineer by profession and a runner, reader, and film lover by inclination.",
+    "is an engineer by profession and, by inclination, a runner, bibliophile, connoisseur of reel and rhythm, tea aficionado, and footloose wanderer. He also has an enduring urge to put his thoughts into words.",
   heroSecond:
-    "When away from work you’ll find him training for marathons, moving between fiction and non-fiction, and watching films worth thinking about.",
+    "When away from work, you’ll find him training for races, moving between fiction and non-fiction, watching films, listening to his favorite songs, brewing a cup of tea, planning his next journey, or simply finding the pleasure of giving thoughts a voice in writing. This blog is, in many ways, a place for all of these interests to meet.",
   writingsTitle: "Recent Writings",
   writingsSubtitle: "Books, Film, Travel, Musings",
   filterTabs: ["Featured", "Recent", "Books", "Films", "Blog"],
